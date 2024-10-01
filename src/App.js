@@ -1,8 +1,10 @@
 
+import TodoApp from "./components/TodoApp/TodoApp";
+
 function App() {
   return (
     <div className="App">
-      hhhh
+      <TodoApp />
     </div>
   );
 }
