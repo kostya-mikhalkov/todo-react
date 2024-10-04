@@ -1,0 +1,12 @@
+
+.todolist {
+    &_title {
+        font-family: 'Sixtyfour Convergence', 'serif';
+        font-size: 20px;
+        text-align: center;
+        margin: 15px 0 5px 0;
+    }
+    &_list {
+        list-style-type: none;
+    }
+}
