@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useEffect } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { MyContext } from '../../context/MyContext';
 
 import '../TodoItem/TodoItem.scss';
@@ -9,16 +9,6 @@ const TodoItem = ({ text, data, id }) => {
     const [edit, setEdit] = useState(false);
     const { setState } = useContext(MyContext);
     const refInput = useRef(null);
-
-    useEffect(() => {
-        const clickOutside = (e) => {
-            if (edit && refInput.current && !refInput.current.contains(e.target)){
-                saveTask()
-            }
-        }
-        document.addEventListener('mousedown', clickOutside);
-        return () => {document.removeEventListener('mousedown', clickOutside)}
-    }, [edit])
 
     const editTaskChange = (e) => {
         setEditTask(e.target.value);
