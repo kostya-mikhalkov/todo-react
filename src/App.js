@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { MyContext } from "./context/MyContext";
+import { MyContext} from "./context/MyContext";
 import TodoApp from "./components/TodoApp/TodoApp";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <MyContext.Provider value={{state, setState}}>
-        <TodoApp />
+          <TodoApp />
       </MyContext.Provider>
     </div>
   );

@@ -1,19 +1,50 @@
 import { useState, useContext, useRef, useEffect } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import uuid from 'react-uuid';
 
 import DatePicker from 'react-datepicker';
 import { MyContext } from '../../context/MyContext';
 
+import complete_icon from '../../assets/complete-icon.png';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../Headers/Headers.scss';
 
 const Headers = () => {
     const [datePicker, setDatePicker] = useState("");
+    const [taskIcon, setTaskIcon] = useState(false);
+    const [dateIcon, setDateIcon] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [task, setTask] = useState("");
-    const {setState} = useContext(MyContext);
+    const {state, setState} = useContext(MyContext);
     const datePickerRef = useRef(null);
     const refBtn = useRef(null);
+
+    useEffect(() => {
+        const arr = JSON.parse(localStorage.getItem('obj'));
+        if (arr && arr.length >= 1) {
+            setState(state => [...state, ...arr]);
+        }
+    }, [setState]);
+
+    useEffect(() => {
+        localStorage.setItem('obj', JSON.stringify(state));
+    }, [state])
+
+    const dateNow = (dataCalendar) => {
+        const dataBoolean = new Date() < dataCalendar;
+        return dataBoolean;
+    }
+
+    useEffect(() => {
+        setTaskIcon(task !== "");
+        setDateIcon(datePicker !== "");
+    }, [task, datePicker]);
+
+    useEffect(() => {
+        if (!dateNow(datePicker)) {
+            setDatePicker("");
+        }
+    }, [datePicker])
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -37,7 +68,7 @@ const Headers = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        
         const regexp = /[A-Za-zА-Яа-я0-9.-]+/;
         if (!regexp.test(task)) {
             setTask("");
@@ -47,6 +78,7 @@ const Headers = () => {
         setTask("");
         setDatePicker("");
     };
+
     const handleChange = (date) => {
         setShowDatePicker(false);
         setDatePicker(date);
@@ -71,12 +103,28 @@ const Headers = () => {
             <form className="task">
                 <label htmlFor="addTask"
                        className="task_label">Add a new task</label>
+                {task ? <CSSTransition in={taskIcon}
+                                       timeout={800}
+                                       classNames="icon"
+                                       unmountOnExit>
+                            <img src={complete_icon}
+                                className='icon_complete_input' 
+                                alt="icon"/>
+                        </CSSTransition> : null}
                 <input type="text"
                        name="addTask"
                        required
                        className="task_input"
                        value={task}
                        onChange={e => setTask(e.target.value)}/>
+                {datePicker ? <CSSTransition in={dateIcon}
+                                       timeout={800}
+                                       classNames="icon"
+                                       unmountOnExit>
+                            <img src={complete_icon}
+                                 className='icon_complete' 
+                                 alt="icon"/>
+                        </CSSTransition>: null}
                 <button className="calendar"
                         type="button"
                         ref={refBtn}

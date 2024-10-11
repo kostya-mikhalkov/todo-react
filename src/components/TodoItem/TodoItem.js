@@ -1,5 +1,6 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { MyContext } from '../../context/MyContext';
+
 import '../TodoItem/TodoItem.scss';
 
 const TodoItem = ({ text, data, id }) => {
